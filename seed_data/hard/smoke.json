@@ -1,0 +1,98 @@
+{
+  "scenario_id": "hard_smoke",
+  "task_id": "hard_liability_dispute",
+  "difficulty": "hard",
+  "description": "1 adversarial dispute: DE_SUB shipped EUR 50,000 of inventory to UK_SUB. Goods were damaged in transit. Agent must determine liability via Incoterms before posting adjustments.",
+  "step_limit": 30,
+  "objectives": [
+    "Retrieve the shipment report to understand the damage",
+    "Retrieve the transit contract to identify shipping terms",
+    "Consult the legal analyst to determine liability",
+    "Post adjustments to the liable entity's ledger",
+    "Resolve the intercompany imbalance"
+  ],
+  "ledger_lines": [
+    {
+      "txn_id": "TXN-H-001-D",
+      "entity_id": "DE_SUB",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {"amount": "50000.00", "currency": "EUR"},
+      "booking_date": "2024-03-01",
+      "status": "open",
+      "description": "IC Receivable - Inventory shipment to UK_SUB, PO-2024-DE-100",
+      "document_ids": ["DOC-H-001", "DOC-H-002"]
+    },
+    {
+      "txn_id": "TXN-H-001-DISP",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "DE_SUB",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {"amount": "0.00", "currency": "EUR"},
+      "booking_date": "2024-03-01",
+      "status": "open",
+      "description": "IC Payable - DISPUTED - Goods damaged in transit, payable not recognized",
+      "document_ids": ["DOC-H-001", "DOC-H-003"]
+    }
+  ],
+  "documents": [
+    {
+      "document_id": "DOC-H-001",
+      "document_type": "shipment_report",
+      "title": "Shipment Report SR-2024-DE-UK-001",
+      "body": "SHIPMENT REPORT\nShipment ID: SR-2024-DE-UK-001\nOrigin: DE_SUB (Frankfurt warehouse)\nDestination: UK_SUB (London warehouse)\nDate Shipped: 2024-03-01\nDate Arrived: 2024-03-08\nContents: Industrial components (500 units)\nDeclared Value: EUR 50,000.00\n\nDAMAGE REPORT:\nUpon inspection at London warehouse, 100% of shipment found water-damaged and unusable.\nInsurance Claim Filed: Yes (Ref: INS-2024-0301)\nCarrier: TransEuro Logistics GmbH\n\nThe receiving party (UK_SUB) has refused to recognize the payable pending liability determination.",
+      "related_entity_ids": ["DE_SUB", "UK_SUB"],
+      "related_txn_ids": ["TXN-H-001-D"]
+    },
+    {
+      "document_id": "DOC-H-002",
+      "document_type": "contract",
+      "title": "Transit Contract TC-2024-DE-UK-001",
+      "body": "TRANSIT CONTRACT\nContract ID: TC-2024-DE-UK-001\nSeller: DE_SUB (German Subsidiary)\nBuyer: UK_SUB (UK Subsidiary)\nDate: 2024-02-15\n\nSHIPPING TERMS:\nIncoterm: CIF (Cost, Insurance, and Freight)\nPort of Loading: Hamburg\nPort of Destination: London\n\nLIABILITY CLAUSE:\nPer CIF terms, the seller (DE_SUB) bears all costs, insurance, and freight charges until goods arrive at the destination port. Risk of loss or damage transfers to the buyer only upon delivery at the destination port.\n\nINSURANCE:\nSeller has arranged marine cargo insurance (Policy: MCI-2024-0215) covering transit from Hamburg to London.\n\nSigned by authorized representatives of both parties.",
+      "related_entity_ids": ["DE_SUB", "UK_SUB"],
+      "related_txn_ids": ["TXN-H-001-D"],
+      "incoterm": "CIF",
+      "origin_entity_id": "DE_SUB",
+      "destination_entity_id": "UK_SUB"
+    },
+    {
+      "document_id": "DOC-H-003",
+      "document_type": "email",
+      "title": "RE: Damaged Shipment SR-2024-DE-UK-001",
+      "body": "From: uk-finance@company.com\nTo: de-finance@company.com\nDate: 2024-03-10\nSubject: RE: Damaged Shipment SR-2024-DE-UK-001\n\nTeam,\n\nWe received shipment SR-2024-DE-UK-001 but the entire contents are water-damaged and unusable. We will NOT recognize the EUR 50,000 payable until liability is formally determined.\n\nPlease refer to the transit contract. Under CIF terms, we believe the seller retains liability until destination delivery.\n\nRegards,\nUK Finance Team",
+      "related_entity_ids": ["UK_SUB", "DE_SUB"],
+      "related_txn_ids": []
+    }
+  ],
+  "fx_rates": [
+    {"source_currency": "EUR", "target_currency": "GBP", "rate_date": "2024-03-01", "rate": "0.8560"},
+    {"source_currency": "EUR", "target_currency": "USD", "rate_date": "2024-03-01", "rate": "1.0850"}
+  ],
+  "legal_truth": {
+    "contract_document_id": "DOC-H-002",
+    "incoterm": "CIF",
+    "liable_entity_id": "DE_SUB",
+    "liable_event": "goods_damaged_in_transit",
+    "rationale": "Under CIF terms, the seller (DE_SUB) bears all risk until goods arrive at the destination port (London). Since the goods were damaged in transit before reaching the destination, DE_SUB is liable for the loss and must write off the receivable as an inventory loss."
+  },
+  "ground_truth": {
+    "required_matches": [],
+    "required_adjustments": [
+      {
+        "entity_id": "DE_SUB",
+        "debit_account_code": "5100",
+        "credit_account_code": "1300",
+        "amount": "50000.00",
+        "currency": "EUR",
+        "reason_code": "inventory_loss"
+      }
+    ],
+    "required_eliminations": [],
+    "required_liable_entity_id": "DE_SUB",
+    "total_expected_matches": 0,
+    "total_expected_adjustments": 1,
+    "total_expected_eliminations": 0
+  }
+}

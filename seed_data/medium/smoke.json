@@ -1,0 +1,253 @@
+{
+  "scenario_id": "medium_smoke",
+  "task_id": "medium_fx_variance",
+  "difficulty": "medium",
+  "description": "3 intercompany FX compliance disputes. Both entities book in USD, but settlement FX rates create disclosure adjustments. Fetch invoices to find settlement dates, query FX rates, post adjustment entries, then match and eliminate all pairs.",
+  "step_limit": 50,
+  "objectives": [
+    "Fetch invoice documents to identify transaction linkages and settlement dates",
+    "Query FX rates for each settlement date to determine the variance",
+    "Post FX variance adjustment entries for each of the 3 disputes",
+    "Match all 3 USD transaction pairs",
+    "Eliminate all 3 matched pairs"
+  ],
+  "ledger_lines": [
+    {
+      "txn_id": "TXN-M-001-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "10000",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-15",
+      "status": "open",
+      "description": "IC Receivable - IT Infrastructure Support Services - Q4 2023",
+      "document_ids": [
+        "DOC-M-001"
+      ]
+    },
+    {
+      "txn_id": "TXN-M-001-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "10000",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-15",
+      "status": "open",
+      "description": "IC Payable - IT Infrastructure Support Services - Q4 2023",
+      "document_ids": [
+        "DOC-M-001"
+      ]
+    },
+    {
+      "txn_id": "TXN-M-002-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "20000",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-20",
+      "status": "open",
+      "description": "IC Receivable - Management Consulting Services - Q1 2024",
+      "document_ids": [
+        "DOC-M-002"
+      ]
+    },
+    {
+      "txn_id": "TXN-M-002-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "20000",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-20",
+      "status": "open",
+      "description": "IC Payable - Management Consulting Services - Q1 2024",
+      "document_ids": [
+        "DOC-M-002"
+      ]
+    },
+    {
+      "txn_id": "TXN-M-003-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "5000",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-25",
+      "status": "open",
+      "description": "IC Receivable - Software Development Support - Q4 2023",
+      "document_ids": [
+        "DOC-M-003"
+      ]
+    },
+    {
+      "txn_id": "TXN-M-003-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "5000",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-25",
+      "status": "open",
+      "description": "IC Payable - Software Development Support - Q4 2023",
+      "document_ids": [
+        "DOC-M-003"
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "document_id": "DOC-M-001",
+      "document_type": "invoice",
+      "title": "Invoice #2024-UK-0042",
+      "body": "INVOICE #2024-UK-0042\nDate: 2024-01-15\nFrom: Acme Holdings Ltd (UK Subsidiary)\nTo: Consolidated Corp (US Parent)\nRe: IT Infrastructure Support Services - Q4 2023\nAmount: USD 10,000.00 (GBP equivalent at booking: 8,000.00)\nExchange Rate at booking: 1 USD = 0.8000 GBP\nPayment Terms: Net 30\nSettlement Due: 2024-02-14\nReference: PO-2024-0015\n\nNote: FX rate on settlement date must be verified for accounting compliance.",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-M-001-D",
+        "TXN-M-001-C"
+      ]
+    },
+    {
+      "document_id": "DOC-M-002",
+      "document_type": "invoice",
+      "title": "Invoice #2024-UK-0043",
+      "body": "INVOICE #2024-UK-0043\nDate: 2024-01-20\nFrom: Acme Holdings Ltd (UK Subsidiary)\nTo: Consolidated Corp (US Parent)\nRe: Management Consulting Services - Q1 2024\nAmount: USD 20,000.00 (GBP equivalent at booking: 15,800.00)\nExchange Rate at booking: 1 USD = 0.7900 GBP\nPayment Terms: Net 30\nSettlement Due: 2024-02-19\nReference: PO-2024-0021\n\nNote: FX rate on settlement date must be verified for accounting compliance.",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-M-002-D",
+        "TXN-M-002-C"
+      ]
+    },
+    {
+      "document_id": "DOC-M-003",
+      "document_type": "invoice",
+      "title": "Invoice #2024-UK-0044",
+      "body": "INVOICE #2024-UK-0044\nDate: 2024-01-25\nFrom: Acme Holdings Ltd (UK Subsidiary)\nTo: Consolidated Corp (US Parent)\nRe: Software Development Support - Q4 2023\nAmount: USD 5,000.00 (GBP equivalent at booking: 4,100.00)\nExchange Rate at booking: 1 USD = 0.8200 GBP\nPayment Terms: Net 30\nSettlement Due: 2024-02-24\nReference: PO-2024-0028\n\nNote: FX rate on settlement date must be verified for accounting compliance.",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-M-003-D",
+        "TXN-M-003-C"
+      ]
+    }
+  ],
+  "fx_rates": [
+    {
+      "source_currency": "USD",
+      "target_currency": "GBP",
+      "rate_date": "2024-01-15",
+      "rate": "0.8000"
+    },
+    {
+      "source_currency": "USD",
+      "target_currency": "GBP",
+      "rate_date": "2024-02-14",
+      "rate": "0.8200"
+    },
+    {
+      "source_currency": "USD",
+      "target_currency": "GBP",
+      "rate_date": "2024-01-20",
+      "rate": "0.7900"
+    },
+    {
+      "source_currency": "USD",
+      "target_currency": "GBP",
+      "rate_date": "2024-02-19",
+      "rate": "0.8300"
+    },
+    {
+      "source_currency": "USD",
+      "target_currency": "GBP",
+      "rate_date": "2024-01-25",
+      "rate": "0.8200"
+    },
+    {
+      "source_currency": "USD",
+      "target_currency": "GBP",
+      "rate_date": "2024-02-24",
+      "rate": "0.8400"
+    }
+  ],
+  "legal_truth": null,
+  "ground_truth": {
+    "required_matches": [
+      [
+        "TXN-M-001-D",
+        "TXN-M-001-C"
+      ],
+      [
+        "TXN-M-002-D",
+        "TXN-M-002-C"
+      ],
+      [
+        "TXN-M-003-D",
+        "TXN-M-003-C"
+      ]
+    ],
+    "required_adjustments": [
+      {
+        "entity_id": "US_PARENT",
+        "debit_account_code": "6100",
+        "credit_account_code": "1300",
+        "amount": "243.90",
+        "currency": "USD",
+        "reason_code": "fx_variance"
+      },
+      {
+        "entity_id": "US_PARENT",
+        "debit_account_code": "6100",
+        "credit_account_code": "1300",
+        "amount": "963.86",
+        "currency": "USD",
+        "reason_code": "fx_variance"
+      },
+      {
+        "entity_id": "US_PARENT",
+        "debit_account_code": "6100",
+        "credit_account_code": "1300",
+        "amount": "119.05",
+        "currency": "USD",
+        "reason_code": "fx_variance"
+      }
+    ],
+    "required_eliminations": [
+      "US_PARENT",
+      "US_PARENT",
+      "US_PARENT"
+    ],
+    "required_fx_rate": null,
+    "required_fx_adjustment_amount": null,
+    "total_expected_matches": 3,
+    "total_expected_adjustments": 3,
+    "total_expected_eliminations": 3
+  }
+}

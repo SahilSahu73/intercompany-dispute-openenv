@@ -1,0 +1,192 @@
+{
+  "scenario_id": "hard_benchmark",
+  "task_id": "hard_liability_dispute",
+  "difficulty": "hard",
+  "description": "3 adversarial liability disputes involving DE_SUB, UK_SUB, and US_PARENT. Mix of CIF and FOB Incoterms determine which entity is liable for each damaged shipment.",
+  "step_limit": 50,
+  "objectives": [
+    "Retrieve all shipment reports and transit contracts",
+    "Consult the legal analyst for each dispute to determine liability",
+    "Post adjustments to the liable entity for each dispute",
+    "Match and eliminate resolved intercompany pairs"
+  ],
+  "ledger_lines": [
+    {
+      "txn_id": "TXN-H-001-D",
+      "entity_id": "DE_SUB",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {"amount": "50000.00", "currency": "EUR"},
+      "booking_date": "2024-03-01",
+      "status": "open",
+      "description": "IC Receivable - Inventory shipment to UK_SUB, PO-2024-DE-100",
+      "document_ids": ["DOC-H-001", "DOC-H-002"]
+    },
+    {
+      "txn_id": "TXN-H-001-DISP",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "DE_SUB",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {"amount": "0.00", "currency": "EUR"},
+      "booking_date": "2024-03-01",
+      "status": "open",
+      "description": "IC Payable - DISPUTED - CIF shipment, goods damaged, payable not recognized",
+      "document_ids": ["DOC-H-001"]
+    },
+    {
+      "txn_id": "TXN-H-002-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "DE_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {"amount": "35000.00", "currency": "USD"},
+      "booking_date": "2024-03-05",
+      "status": "open",
+      "description": "IC Receivable - Electronics shipment to DE_SUB, PO-2024-US-205",
+      "document_ids": ["DOC-H-004", "DOC-H-005"]
+    },
+    {
+      "txn_id": "TXN-H-002-DISP",
+      "entity_id": "DE_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {"amount": "0.00", "currency": "USD"},
+      "booking_date": "2024-03-05",
+      "status": "open",
+      "description": "IC Payable - DISPUTED - FOB shipment, goods lost at sea, awaiting liability determination",
+      "document_ids": ["DOC-H-004"]
+    },
+    {
+      "txn_id": "TXN-H-003-D",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {"amount": "28000.00", "currency": "GBP"},
+      "booking_date": "2024-03-10",
+      "status": "open",
+      "description": "IC Receivable - Pharmaceutical components to US_PARENT, PO-2024-UK-310",
+      "document_ids": ["DOC-H-007", "DOC-H-008"]
+    },
+    {
+      "txn_id": "TXN-H-003-DISP",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {"amount": "0.00", "currency": "GBP"},
+      "booking_date": "2024-03-10",
+      "status": "open",
+      "description": "IC Payable - DISPUTED - CIF shipment, temperature excursion, goods rejected",
+      "document_ids": ["DOC-H-007"]
+    }
+  ],
+  "documents": [
+    {
+      "document_id": "DOC-H-001",
+      "document_type": "shipment_report",
+      "title": "Shipment Report SR-2024-DE-UK-001",
+      "body": "SHIPMENT REPORT\nShipment ID: SR-2024-DE-UK-001\nOrigin: DE_SUB (Frankfurt)\nDestination: UK_SUB (London)\nDate Shipped: 2024-03-01\nDate Arrived: 2024-03-08\nContents: Industrial components (500 units)\nDeclared Value: EUR 50,000.00\n\nDAMAGE REPORT: 100% of shipment water-damaged during maritime transit.\nInsurance: Policy MCI-2024-0215 (arranged by seller)\nCarrier: TransEuro Logistics GmbH",
+      "related_entity_ids": ["DE_SUB", "UK_SUB"],
+      "related_txn_ids": ["TXN-H-001-D"]
+    },
+    {
+      "document_id": "DOC-H-002",
+      "document_type": "contract",
+      "title": "Transit Contract TC-2024-DE-UK-001 (CIF)",
+      "body": "TRANSIT CONTRACT TC-2024-DE-UK-001\nSeller: DE_SUB | Buyer: UK_SUB\nDate: 2024-02-15\n\nSHIPPING TERMS: Incoterm: CIF (Cost, Insurance, and Freight)\nPort of Loading: Hamburg | Port of Destination: London\n\nPer CIF terms, seller (DE_SUB) bears risk until goods arrive at destination port.\nSeller has arranged marine cargo insurance Policy: MCI-2024-0215.",
+      "related_entity_ids": ["DE_SUB", "UK_SUB"],
+      "related_txn_ids": ["TXN-H-001-D"],
+      "incoterm": "CIF",
+      "origin_entity_id": "DE_SUB",
+      "destination_entity_id": "UK_SUB"
+    },
+    {
+      "document_id": "DOC-H-004",
+      "document_type": "shipment_report",
+      "title": "Shipment Report SR-2024-US-DE-002",
+      "body": "SHIPMENT REPORT\nShipment ID: SR-2024-US-DE-002\nOrigin: US_PARENT (New York warehouse)\nDestination: DE_SUB (Frankfurt warehouse)\nDate Shipped: 2024-03-05\nDate Arrived: Never (lost at sea)\nContents: Electronics and semiconductors (200 units)\nDeclared Value: USD 35,000.00\n\nINCIDENT REPORT: Container lost overboard during Atlantic crossing in rough weather.\nLoss confirmed by carrier Maritime Express Inc.\nThe goods never arrived at the destination.",
+      "related_entity_ids": ["US_PARENT", "DE_SUB"],
+      "related_txn_ids": ["TXN-H-002-D"]
+    },
+    {
+      "document_id": "DOC-H-005",
+      "document_type": "contract",
+      "title": "Transit Contract TC-2024-US-DE-002 (FOB)",
+      "body": "TRANSIT CONTRACT TC-2024-US-DE-002\nSeller: US_PARENT | Buyer: DE_SUB\nDate: 2024-02-28\n\nSHIPPING TERMS: Incoterm: FOB (Free On Board)\nPort of Loading: New York\nPort of Destination: Bremen\n\nPer FOB terms, risk transfers to the buyer (DE_SUB) once goods are loaded onto the vessel at the port of loading. Buyer is responsible for arranging freight insurance from point of loading.",
+      "related_entity_ids": ["US_PARENT", "DE_SUB"],
+      "related_txn_ids": ["TXN-H-002-D"],
+      "incoterm": "FOB",
+      "origin_entity_id": "US_PARENT",
+      "destination_entity_id": "DE_SUB"
+    },
+    {
+      "document_id": "DOC-H-007",
+      "document_type": "shipment_report",
+      "title": "Shipment Report SR-2024-UK-US-003",
+      "body": "SHIPMENT REPORT\nShipment ID: SR-2024-UK-US-003\nOrigin: UK_SUB (Manchester plant)\nDestination: US_PARENT (Chicago warehouse)\nDate Shipped: 2024-03-10\nDate Arrived: 2024-03-22\nContents: Pharmaceutical active ingredients (batch B-2024-0310)\nDeclared Value: GBP 28,000.00\n\nREJECTION REPORT: Shipment rejected at customs. Temperature excursion detected during transit\n(temperature exceeded 8°C for 6 hours, spoiling temperature-sensitive cargo).\nGoods deemed unusable and returned to sender at buyer's customs facility.",
+      "related_entity_ids": ["UK_SUB", "US_PARENT"],
+      "related_txn_ids": ["TXN-H-003-D"]
+    },
+    {
+      "document_id": "DOC-H-008",
+      "document_type": "contract",
+      "title": "Transit Contract TC-2024-UK-US-003 (CIF)",
+      "body": "TRANSIT CONTRACT TC-2024-UK-US-003\nSeller: UK_SUB | Buyer: US_PARENT\nDate: 2024-03-01\n\nSHIPPING TERMS: Incoterm: CIF (Cost, Insurance, and Freight)\nPort of Loading: Liverpool\nPort of Destination: New York\n\nPer CIF terms, seller (UK_SUB) bears risk and arranges insurance until goods arrive at destination port.\nTemperature-controlled shipping required for pharmaceutical cargo. Seller responsible for cold chain compliance.",
+      "related_entity_ids": ["UK_SUB", "US_PARENT"],
+      "related_txn_ids": ["TXN-H-003-D"],
+      "incoterm": "CIF",
+      "origin_entity_id": "UK_SUB",
+      "destination_entity_id": "US_PARENT"
+    }
+  ],
+  "fx_rates": [
+    {"source_currency": "EUR", "target_currency": "GBP", "rate_date": "2024-03-01", "rate": "0.8560"},
+    {"source_currency": "EUR", "target_currency": "USD", "rate_date": "2024-03-01", "rate": "1.0850"},
+    {"source_currency": "GBP", "target_currency": "USD", "rate_date": "2024-03-10", "rate": "1.2680"}
+  ],
+  "legal_truth": {
+    "contract_document_id": "DOC-H-002",
+    "incoterm": "CIF",
+    "liable_entity_id": "DE_SUB",
+    "liable_event": "goods_damaged_in_transit",
+    "rationale": "Primary dispute (DOC-H-002): CIF — DE_SUB (seller) is liable. Secondary dispute (DOC-H-005): FOB — DE_SUB (buyer) is liable once loaded. Tertiary dispute (DOC-H-008): CIF — UK_SUB (seller) is liable."
+  },
+  "ground_truth": {
+    "required_matches": [],
+    "required_adjustments": [
+      {
+        "entity_id": "DE_SUB",
+        "debit_account_code": "5100",
+        "credit_account_code": "1300",
+        "amount": "50000.00",
+        "currency": "EUR",
+        "reason_code": "inventory_loss"
+      },
+      {
+        "entity_id": "DE_SUB",
+        "debit_account_code": "1400",
+        "credit_account_code": "5100",
+        "amount": "35000.00",
+        "currency": "USD",
+        "reason_code": "inventory_loss"
+      },
+      {
+        "entity_id": "UK_SUB",
+        "debit_account_code": "5100",
+        "credit_account_code": "1300",
+        "amount": "28000.00",
+        "currency": "GBP",
+        "reason_code": "inventory_loss"
+      }
+    ],
+    "required_eliminations": [],
+    "required_liable_entity_id": "DE_SUB",
+    "total_expected_matches": 0,
+    "total_expected_adjustments": 3,
+    "total_expected_eliminations": 0
+  }
+}

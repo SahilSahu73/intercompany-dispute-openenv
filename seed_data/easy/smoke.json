@@ -1,0 +1,146 @@
+{
+  "scenario_id": "easy_smoke",
+  "task_id": "easy_batch_matching",
+  "difficulty": "easy",
+  "description": "Smoke test: 10 clean intercompany transactions (5 pairs) between US_PARENT and UK_SUB. All amounts in USD, explicit 1-to-1 references.",
+  "step_limit": 30,
+  "objectives": [
+    "Match all 5 debit-credit transaction pairs",
+    "Eliminate all 5 matched pairs"
+  ],
+  "ledger_lines": [
+    {
+      "txn_id": "TXN-E-001-D", "entity_id": "US_PARENT", "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300", "side": "debit",
+      "money": {"amount": "10000.00", "currency": "USD"},
+      "booking_date": "2024-01-15",
+      "description": "IC Receivable - Invoice INV-001 consulting services Q1",
+      "document_ids": ["DOC-E-001"]
+    },
+    {
+      "txn_id": "TXN-E-001-C", "entity_id": "UK_SUB", "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300", "side": "credit",
+      "money": {"amount": "10000.00", "currency": "USD"},
+      "booking_date": "2024-01-15",
+      "description": "IC Payable - Invoice INV-001 consulting services Q1",
+      "document_ids": ["DOC-E-001"]
+    },
+    {
+      "txn_id": "TXN-E-002-D", "entity_id": "US_PARENT", "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300", "side": "debit",
+      "money": {"amount": "25000.00", "currency": "USD"},
+      "booking_date": "2024-01-20",
+      "description": "IC Receivable - Invoice INV-002 software licensing Q1",
+      "document_ids": ["DOC-E-002"]
+    },
+    {
+      "txn_id": "TXN-E-002-C", "entity_id": "UK_SUB", "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300", "side": "credit",
+      "money": {"amount": "25000.00", "currency": "USD"},
+      "booking_date": "2024-01-20",
+      "description": "IC Payable - Invoice INV-002 software licensing Q1",
+      "document_ids": ["DOC-E-002"]
+    },
+    {
+      "txn_id": "TXN-E-003-D", "entity_id": "US_PARENT", "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300", "side": "debit",
+      "money": {"amount": "5000.00", "currency": "USD"},
+      "booking_date": "2024-01-22",
+      "description": "IC Receivable - Invoice INV-003 IT support services",
+      "document_ids": ["DOC-E-003"]
+    },
+    {
+      "txn_id": "TXN-E-003-C", "entity_id": "UK_SUB", "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300", "side": "credit",
+      "money": {"amount": "5000.00", "currency": "USD"},
+      "booking_date": "2024-01-22",
+      "description": "IC Payable - Invoice INV-003 IT support services",
+      "document_ids": ["DOC-E-003"]
+    },
+    {
+      "txn_id": "TXN-E-004-D", "entity_id": "US_PARENT", "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300", "side": "debit",
+      "money": {"amount": "50000.00", "currency": "USD"},
+      "booking_date": "2024-01-25",
+      "description": "IC Receivable - Invoice INV-004 training program delivery",
+      "document_ids": ["DOC-E-004"]
+    },
+    {
+      "txn_id": "TXN-E-004-C", "entity_id": "UK_SUB", "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300", "side": "credit",
+      "money": {"amount": "50000.00", "currency": "USD"},
+      "booking_date": "2024-01-25",
+      "description": "IC Payable - Invoice INV-004 training program delivery",
+      "document_ids": ["DOC-E-004"]
+    },
+    {
+      "txn_id": "TXN-E-005-D", "entity_id": "US_PARENT", "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300", "side": "debit",
+      "money": {"amount": "15000.00", "currency": "USD"},
+      "booking_date": "2024-01-28",
+      "description": "IC Receivable - Invoice INV-005 marketing services Q1",
+      "document_ids": ["DOC-E-005"]
+    },
+    {
+      "txn_id": "TXN-E-005-C", "entity_id": "UK_SUB", "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300", "side": "credit",
+      "money": {"amount": "15000.00", "currency": "USD"},
+      "booking_date": "2024-01-28",
+      "description": "IC Payable - Invoice INV-005 marketing services Q1",
+      "document_ids": ["DOC-E-005"]
+    }
+  ],
+  "documents": [
+    {
+      "document_id": "DOC-E-001", "document_type": "invoice",
+      "title": "Invoice INV-001: US_PARENT to UK_SUB",
+      "body": "Invoice INV-001\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 10,000.00\nDate: 2024-01-15\nDescription: Management consulting services - Q1 2024\nDebit Ref: TXN-E-001-D\nCredit Ref: TXN-E-001-C",
+      "related_entity_ids": ["US_PARENT", "UK_SUB"],
+      "related_txn_ids": ["TXN-E-001-D", "TXN-E-001-C"]
+    },
+    {
+      "document_id": "DOC-E-002", "document_type": "invoice",
+      "title": "Invoice INV-002: US_PARENT to UK_SUB",
+      "body": "Invoice INV-002\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 25,000.00\nDate: 2024-01-20\nDescription: Software licensing fees - Q1 2024\nDebit Ref: TXN-E-002-D\nCredit Ref: TXN-E-002-C",
+      "related_entity_ids": ["US_PARENT", "UK_SUB"],
+      "related_txn_ids": ["TXN-E-002-D", "TXN-E-002-C"]
+    },
+    {
+      "document_id": "DOC-E-003", "document_type": "invoice",
+      "title": "Invoice INV-003: US_PARENT to UK_SUB",
+      "body": "Invoice INV-003\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 5,000.00\nDate: 2024-01-22\nDescription: IT support services - January 2024\nDebit Ref: TXN-E-003-D\nCredit Ref: TXN-E-003-C",
+      "related_entity_ids": ["US_PARENT", "UK_SUB"],
+      "related_txn_ids": ["TXN-E-003-D", "TXN-E-003-C"]
+    },
+    {
+      "document_id": "DOC-E-004", "document_type": "invoice",
+      "title": "Invoice INV-004: US_PARENT to UK_SUB",
+      "body": "Invoice INV-004\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 50,000.00\nDate: 2024-01-25\nDescription: Training program delivery - Global Q1\nDebit Ref: TXN-E-004-D\nCredit Ref: TXN-E-004-C",
+      "related_entity_ids": ["US_PARENT", "UK_SUB"],
+      "related_txn_ids": ["TXN-E-004-D", "TXN-E-004-C"]
+    },
+    {
+      "document_id": "DOC-E-005", "document_type": "invoice",
+      "title": "Invoice INV-005: US_PARENT to UK_SUB",
+      "body": "Invoice INV-005\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 15,000.00\nDate: 2024-01-28\nDescription: Marketing services Q1 2024\nDebit Ref: TXN-E-005-D\nCredit Ref: TXN-E-005-C",
+      "related_entity_ids": ["US_PARENT", "UK_SUB"],
+      "related_txn_ids": ["TXN-E-005-D", "TXN-E-005-C"]
+    }
+  ],
+  "fx_rates": [],
+  "legal_truth": null,
+  "ground_truth": {
+    "required_matches": [
+      ["TXN-E-001-D", "TXN-E-001-C"],
+      ["TXN-E-002-D", "TXN-E-002-C"],
+      ["TXN-E-003-D", "TXN-E-003-C"],
+      ["TXN-E-004-D", "TXN-E-004-C"],
+      ["TXN-E-005-D", "TXN-E-005-C"]
+    ],
+    "required_adjustments": [],
+    "required_eliminations": ["US_PARENT"],
+    "total_expected_matches": 5,
+    "total_expected_adjustments": 0,
+    "total_expected_eliminations": 5
+  }
+}

@@ -1,0 +1,1087 @@
+{
+  "scenario_id": "easy_benchmark",
+  "task_id": "easy_batch_matching",
+  "difficulty": "easy",
+  "description": "Benchmark: 40 clean intercompany transactions (20 pairs) between US_PARENT and UK_SUB. All amounts in USD, explicit 1-to-1 references. No FX conversion needed. Match all pairs and eliminate them.",
+  "step_limit": 80,
+  "objectives": [
+    "Match all 20 debit-credit transaction pairs",
+    "Eliminate all 20 matched pairs"
+  ],
+  "ledger_lines": [
+    {
+      "txn_id": "TXN-E-001-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "8500.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-05",
+      "description": "IC Receivable - Invoice INV-001 management consulting services Q1",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-001"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-001-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "8500.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-05",
+      "description": "IC Payable - Invoice INV-001 management consulting services Q1",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-001"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-002-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "12000.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-08",
+      "description": "IC Receivable - Invoice INV-002 software licensing fee Q1",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-002"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-002-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "12000.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-08",
+      "description": "IC Payable - Invoice INV-002 software licensing fee Q1",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-002"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-003-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "3200.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-10",
+      "description": "IC Receivable - Invoice INV-003 IT support and maintenance",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-003"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-003-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "3200.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-10",
+      "description": "IC Payable - Invoice INV-003 IT support and maintenance",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-003"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-004-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "45000.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-12",
+      "description": "IC Receivable - Invoice INV-004 training program delivery",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-004"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-004-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "45000.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-12",
+      "description": "IC Payable - Invoice INV-004 training program delivery",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-004"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-005-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "7800.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-14",
+      "description": "IC Receivable - Invoice INV-005 marketing services Q1",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-005"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-005-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "7800.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-14",
+      "description": "IC Payable - Invoice INV-005 marketing services Q1",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-005"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-006-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "22500.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-16",
+      "description": "IC Receivable - Invoice INV-006 data analytics platform",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-006"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-006-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "22500.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-16",
+      "description": "IC Payable - Invoice INV-006 data analytics platform",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-006"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-007-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "1500.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-18",
+      "description": "IC Receivable - Invoice INV-007 cloud infrastructure usage",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-007"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-007-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "1500.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-18",
+      "description": "IC Payable - Invoice INV-007 cloud infrastructure usage",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-007"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-008-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "67000.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-20",
+      "description": "IC Receivable - Invoice INV-008 executive advisory services",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-008"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-008-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "67000.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-20",
+      "description": "IC Payable - Invoice INV-008 executive advisory services",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-008"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-009-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "9300.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-22",
+      "description": "IC Receivable - Invoice INV-009 product development support",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-009"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-009-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "9300.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-22",
+      "description": "IC Payable - Invoice INV-009 product development support",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-009"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-010-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "31000.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-24",
+      "description": "IC Receivable - Invoice INV-010 supply chain consulting",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-010"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-010-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "31000.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-24",
+      "description": "IC Payable - Invoice INV-010 supply chain consulting",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-010"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-011-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "4700.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-25",
+      "description": "IC Receivable - Invoice INV-011 financial reporting services",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-011"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-011-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "4700.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-25",
+      "description": "IC Payable - Invoice INV-011 financial reporting services",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-011"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-012-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "88000.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-26",
+      "description": "IC Receivable - Invoice INV-012 ERP system integration",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-012"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-012-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "88000.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-26",
+      "description": "IC Payable - Invoice INV-012 ERP system integration",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-012"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-013-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "16200.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-27",
+      "description": "IC Receivable - Invoice INV-013 cybersecurity assessment",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-013"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-013-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "16200.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-27",
+      "description": "IC Payable - Invoice INV-013 cybersecurity assessment",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-013"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-014-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "2900.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-28",
+      "description": "IC Receivable - Invoice INV-014 logistics coordination fee",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-014"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-014-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "2900.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-28",
+      "description": "IC Payable - Invoice INV-014 logistics coordination fee",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-014"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-015-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "54000.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-29",
+      "description": "IC Receivable - Invoice INV-015 brand management services",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-015"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-015-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "54000.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-29",
+      "description": "IC Payable - Invoice INV-015 brand management services",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-015"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-016-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "11800.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-30",
+      "description": "IC Receivable - Invoice INV-016 tax compliance advisory",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-016"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-016-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "11800.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-30",
+      "description": "IC Payable - Invoice INV-016 tax compliance advisory",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-016"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-017-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "38500.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-31",
+      "description": "IC Receivable - Invoice INV-017 HR shared services Q1",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-017"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-017-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "38500.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-01-31",
+      "description": "IC Payable - Invoice INV-017 HR shared services Q1",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-017"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-018-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "6100.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-02-01",
+      "description": "IC Receivable - Invoice INV-018 procurement management fee",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-018"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-018-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "6100.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-02-01",
+      "description": "IC Payable - Invoice INV-018 procurement management fee",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-018"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-019-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "25300.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-02-02",
+      "description": "IC Receivable - Invoice INV-019 R&D cost sharing Q1",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-019"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-019-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "25300.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-02-02",
+      "description": "IC Payable - Invoice INV-019 R&D cost sharing Q1",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-019"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-020-D",
+      "entity_id": "US_PARENT",
+      "counterparty_entity_id": "UK_SUB",
+      "account_code": "1300",
+      "side": "debit",
+      "money": {
+        "amount": "100000.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-02-03",
+      "description": "IC Receivable - Invoice INV-020 legal advisory services",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-020"
+      ]
+    },
+    {
+      "txn_id": "TXN-E-020-C",
+      "entity_id": "UK_SUB",
+      "counterparty_entity_id": "US_PARENT",
+      "account_code": "2300",
+      "side": "credit",
+      "money": {
+        "amount": "100000.00",
+        "currency": "USD"
+      },
+      "booking_date": "2024-02-03",
+      "description": "IC Payable - Invoice INV-020 legal advisory services",
+      "status": "open",
+      "document_ids": [
+        "DOC-E-020"
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "document_id": "DOC-E-001",
+      "document_type": "invoice",
+      "title": "Invoice INV-001: US_PARENT to UK_SUB",
+      "body": "Invoice INV-001\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 8,500.00\nDate: 2024-01-05\nDescription: Management consulting services q1\nDebit Ref: TXN-E-001-D\nCredit Ref: TXN-E-001-C",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-E-001-D",
+        "TXN-E-001-C"
+      ]
+    },
+    {
+      "document_id": "DOC-E-002",
+      "document_type": "invoice",
+      "title": "Invoice INV-002: US_PARENT to UK_SUB",
+      "body": "Invoice INV-002\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 12,000.00\nDate: 2024-01-08\nDescription: Software licensing fee q1\nDebit Ref: TXN-E-002-D\nCredit Ref: TXN-E-002-C",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-E-002-D",
+        "TXN-E-002-C"
+      ]
+    },
+    {
+      "document_id": "DOC-E-003",
+      "document_type": "invoice",
+      "title": "Invoice INV-003: US_PARENT to UK_SUB",
+      "body": "Invoice INV-003\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 3,200.00\nDate: 2024-01-10\nDescription: It support and maintenance\nDebit Ref: TXN-E-003-D\nCredit Ref: TXN-E-003-C",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-E-003-D",
+        "TXN-E-003-C"
+      ]
+    },
+    {
+      "document_id": "DOC-E-004",
+      "document_type": "invoice",
+      "title": "Invoice INV-004: US_PARENT to UK_SUB",
+      "body": "Invoice INV-004\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 45,000.00\nDate: 2024-01-12\nDescription: Training program delivery\nDebit Ref: TXN-E-004-D\nCredit Ref: TXN-E-004-C",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-E-004-D",
+        "TXN-E-004-C"
+      ]
+    },
+    {
+      "document_id": "DOC-E-005",
+      "document_type": "invoice",
+      "title": "Invoice INV-005: US_PARENT to UK_SUB",
+      "body": "Invoice INV-005\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 7,800.00\nDate: 2024-01-14\nDescription: Marketing services q1\nDebit Ref: TXN-E-005-D\nCredit Ref: TXN-E-005-C",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-E-005-D",
+        "TXN-E-005-C"
+      ]
+    },
+    {
+      "document_id": "DOC-E-006",
+      "document_type": "invoice",
+      "title": "Invoice INV-006: US_PARENT to UK_SUB",
+      "body": "Invoice INV-006\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 22,500.00\nDate: 2024-01-16\nDescription: Data analytics platform\nDebit Ref: TXN-E-006-D\nCredit Ref: TXN-E-006-C",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-E-006-D",
+        "TXN-E-006-C"
+      ]
+    },
+    {
+      "document_id": "DOC-E-007",
+      "document_type": "invoice",
+      "title": "Invoice INV-007: US_PARENT to UK_SUB",
+      "body": "Invoice INV-007\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 1,500.00\nDate: 2024-01-18\nDescription: Cloud infrastructure usage\nDebit Ref: TXN-E-007-D\nCredit Ref: TXN-E-007-C",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-E-007-D",
+        "TXN-E-007-C"
+      ]
+    },
+    {
+      "document_id": "DOC-E-008",
+      "document_type": "invoice",
+      "title": "Invoice INV-008: US_PARENT to UK_SUB",
+      "body": "Invoice INV-008\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 67,000.00\nDate: 2024-01-20\nDescription: Executive advisory services\nDebit Ref: TXN-E-008-D\nCredit Ref: TXN-E-008-C",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-E-008-D",
+        "TXN-E-008-C"
+      ]
+    },
+    {
+      "document_id": "DOC-E-009",
+      "document_type": "invoice",
+      "title": "Invoice INV-009: US_PARENT to UK_SUB",
+      "body": "Invoice INV-009\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 9,300.00\nDate: 2024-01-22\nDescription: Product development support\nDebit Ref: TXN-E-009-D\nCredit Ref: TXN-E-009-C",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-E-009-D",
+        "TXN-E-009-C"
+      ]
+    },
+    {
+      "document_id": "DOC-E-010",
+      "document_type": "invoice",
+      "title": "Invoice INV-010: US_PARENT to UK_SUB",
+      "body": "Invoice INV-010\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 31,000.00\nDate: 2024-01-24\nDescription: Supply chain consulting\nDebit Ref: TXN-E-010-D\nCredit Ref: TXN-E-010-C",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-E-010-D",
+        "TXN-E-010-C"
+      ]
+    },
+    {
+      "document_id": "DOC-E-011",
+      "document_type": "invoice",
+      "title": "Invoice INV-011: US_PARENT to UK_SUB",
+      "body": "Invoice INV-011\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 4,700.00\nDate: 2024-01-25\nDescription: Financial reporting services\nDebit Ref: TXN-E-011-D\nCredit Ref: TXN-E-011-C",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-E-011-D",
+        "TXN-E-011-C"
+      ]
+    },
+    {
+      "document_id": "DOC-E-012",
+      "document_type": "invoice",
+      "title": "Invoice INV-012: US_PARENT to UK_SUB",
+      "body": "Invoice INV-012\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 88,000.00\nDate: 2024-01-26\nDescription: Erp system integration\nDebit Ref: TXN-E-012-D\nCredit Ref: TXN-E-012-C",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-E-012-D",
+        "TXN-E-012-C"
+      ]
+    },
+    {
+      "document_id": "DOC-E-013",
+      "document_type": "invoice",
+      "title": "Invoice INV-013: US_PARENT to UK_SUB",
+      "body": "Invoice INV-013\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 16,200.00\nDate: 2024-01-27\nDescription: Cybersecurity assessment\nDebit Ref: TXN-E-013-D\nCredit Ref: TXN-E-013-C",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-E-013-D",
+        "TXN-E-013-C"
+      ]
+    },
+    {
+      "document_id": "DOC-E-014",
+      "document_type": "invoice",
+      "title": "Invoice INV-014: US_PARENT to UK_SUB",
+      "body": "Invoice INV-014\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 2,900.00\nDate: 2024-01-28\nDescription: Logistics coordination fee\nDebit Ref: TXN-E-014-D\nCredit Ref: TXN-E-014-C",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-E-014-D",
+        "TXN-E-014-C"
+      ]
+    },
+    {
+      "document_id": "DOC-E-015",
+      "document_type": "invoice",
+      "title": "Invoice INV-015: US_PARENT to UK_SUB",
+      "body": "Invoice INV-015\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 54,000.00\nDate: 2024-01-29\nDescription: Brand management services\nDebit Ref: TXN-E-015-D\nCredit Ref: TXN-E-015-C",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-E-015-D",
+        "TXN-E-015-C"
+      ]
+    },
+    {
+      "document_id": "DOC-E-016",
+      "document_type": "invoice",
+      "title": "Invoice INV-016: US_PARENT to UK_SUB",
+      "body": "Invoice INV-016\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 11,800.00\nDate: 2024-01-30\nDescription: Tax compliance advisory\nDebit Ref: TXN-E-016-D\nCredit Ref: TXN-E-016-C",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-E-016-D",
+        "TXN-E-016-C"
+      ]
+    },
+    {
+      "document_id": "DOC-E-017",
+      "document_type": "invoice",
+      "title": "Invoice INV-017: US_PARENT to UK_SUB",
+      "body": "Invoice INV-017\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 38,500.00\nDate: 2024-01-31\nDescription: Hr shared services q1\nDebit Ref: TXN-E-017-D\nCredit Ref: TXN-E-017-C",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-E-017-D",
+        "TXN-E-017-C"
+      ]
+    },
+    {
+      "document_id": "DOC-E-018",
+      "document_type": "invoice",
+      "title": "Invoice INV-018: US_PARENT to UK_SUB",
+      "body": "Invoice INV-018\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 6,100.00\nDate: 2024-02-01\nDescription: Procurement management fee\nDebit Ref: TXN-E-018-D\nCredit Ref: TXN-E-018-C",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-E-018-D",
+        "TXN-E-018-C"
+      ]
+    },
+    {
+      "document_id": "DOC-E-019",
+      "document_type": "invoice",
+      "title": "Invoice INV-019: US_PARENT to UK_SUB",
+      "body": "Invoice INV-019\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 25,300.00\nDate: 2024-02-02\nDescription: R&d cost sharing q1\nDebit Ref: TXN-E-019-D\nCredit Ref: TXN-E-019-C",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-E-019-D",
+        "TXN-E-019-C"
+      ]
+    },
+    {
+      "document_id": "DOC-E-020",
+      "document_type": "invoice",
+      "title": "Invoice INV-020: US_PARENT to UK_SUB",
+      "body": "Invoice INV-020\nFrom: US_PARENT\nTo: UK_SUB\nAmount: USD 100,000.00\nDate: 2024-02-03\nDescription: Legal advisory services\nDebit Ref: TXN-E-020-D\nCredit Ref: TXN-E-020-C",
+      "related_entity_ids": [
+        "US_PARENT",
+        "UK_SUB"
+      ],
+      "related_txn_ids": [
+        "TXN-E-020-D",
+        "TXN-E-020-C"
+      ]
+    }
+  ],
+  "fx_rates": [],
+  "legal_truth": null,
+  "ground_truth": {
+    "required_matches": [
+      [
+        "TXN-E-001-D",
+        "TXN-E-001-C"
+      ],
+      [
+        "TXN-E-002-D",
+        "TXN-E-002-C"
+      ],
+      [
+        "TXN-E-003-D",
+        "TXN-E-003-C"
+      ],
+      [
+        "TXN-E-004-D",
+        "TXN-E-004-C"
+      ],
+      [
+        "TXN-E-005-D",
+        "TXN-E-005-C"
+      ],
+      [
+        "TXN-E-006-D",
+        "TXN-E-006-C"
+      ],
+      [
+        "TXN-E-007-D",
+        "TXN-E-007-C"
+      ],
+      [
+        "TXN-E-008-D",
+        "TXN-E-008-C"
+      ],
+      [
+        "TXN-E-009-D",
+        "TXN-E-009-C"
+      ],
+      [
+        "TXN-E-010-D",
+        "TXN-E-010-C"
+      ],
+      [
+        "TXN-E-011-D",
+        "TXN-E-011-C"
+      ],
+      [
+        "TXN-E-012-D",
+        "TXN-E-012-C"
+      ],
+      [
+        "TXN-E-013-D",
+        "TXN-E-013-C"
+      ],
+      [
+        "TXN-E-014-D",
+        "TXN-E-014-C"
+      ],
+      [
+        "TXN-E-015-D",
+        "TXN-E-015-C"
+      ],
+      [
+        "TXN-E-016-D",
+        "TXN-E-016-C"
+      ],
+      [
+        "TXN-E-017-D",
+        "TXN-E-017-C"
+      ],
+      [
+        "TXN-E-018-D",
+        "TXN-E-018-C"
+      ],
+      [
+        "TXN-E-019-D",
+        "TXN-E-019-C"
+      ],
+      [
+        "TXN-E-020-D",
+        "TXN-E-020-C"
+      ]
+    ],
+    "required_adjustments": [],
+    "required_eliminations": [
+      "US_PARENT",
+      "US_PARENT",
+      "US_PARENT",
+      "US_PARENT",
+      "US_PARENT",
+      "US_PARENT",
+      "US_PARENT",
+      "US_PARENT",
+      "US_PARENT",
+      "US_PARENT",
+      "US_PARENT",
+      "US_PARENT",
+      "US_PARENT",
+      "US_PARENT",
+      "US_PARENT",
+      "US_PARENT",
+      "US_PARENT",
+      "US_PARENT",
+      "US_PARENT",
+      "US_PARENT"
+    ],
+    "total_expected_matches": 20,
+    "total_expected_adjustments": 0,
+    "total_expected_eliminations": 20
+  }
+}
