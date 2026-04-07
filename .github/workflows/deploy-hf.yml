@@ -12,12 +12,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           lfs: true
 
       - name: Push to Hugging Face Spaces
-        uses: huggingface/huggingface-hub-action@v1
-        with:
-          src_path: "."
-          repo_id: Sahil-Sahu-0301/intercompany-dispute-env
-          repo_type: space
-          token: ${{ secrets.HF_TOKEN }}
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          git config user.email "deploy@github-actions"
+          git config user.name "GitHub Actions"
+          git push https://Sahil-Sahu-0301:${HF_TOKEN}@huggingface.co/spaces/Sahil-Sahu-0301/intercompany-dispute-env HEAD:main --force
