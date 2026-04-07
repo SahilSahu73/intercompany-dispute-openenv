@@ -10,6 +10,9 @@ dependencies = [
     "uvicorn>=0.24.0",
     "fastmcp>=2.0.0",
     "pydantic>=2.0.0",
+    "openai>=1.0.0",
+    "python-dotenv>=1.0.0",
+    "huggingface-hub>=1.8.0",
 ]
 
 [project.scripts]
@@ -25,5 +28,6 @@ include = ["server*", "domain*", "services*", "graders*", "tasks*"]
 
 [dependency-groups]
 dev = [
+    "huggingface-hub>=1.8.0",
     "pytest>=9.0.2",
 ]

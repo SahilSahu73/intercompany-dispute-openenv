@@ -18,7 +18,15 @@ STDOUT FORMAT (required by hackathon):
 import json
 import os
 import sys
+from pathlib import Path
 from typing import Optional
+
+# Load .env file if present (local development / inference runs)
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).parent / ".env")
+except ImportError:
+    pass  # python-dotenv not installed; rely on shell env vars
 
 # ---------------------------------------------------------------------------
 # Configuration

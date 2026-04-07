@@ -19,6 +19,9 @@ COPY . .
 # Install project
 RUN uv sync --frozen --no-dev
 
+# Ensure root-level modules (models.py, etc.) are importable
+ENV PYTHONPATH=/app
+
 # Expose OpenEnv port
 EXPOSE 8000
 
