@@ -56,9 +56,21 @@ def build_user_prompt(
     last_result: str,
     history: list[str],
     directives: str,
+    last_reward: float | None = None,
 ) -> str:
     """Build the single user message sent each step."""
     parts = [f"Step {step}/{max_steps}"]
+
+    if last_reward is not None and step > 1:
+        if last_reward >= 0.09:
+            signal = "GOOD — action succeeded"
+        elif last_reward > 0:
+            signal = "OK — evidence gathered"
+        elif last_reward < -0.05:
+            signal = "BAD — rejected/loop penalty. Change your action!"
+        else:
+            signal = "neutral step cost"
+        parts.append(f"LAST REWARD: {last_reward:+.2f} ({signal})")
 
     if directives:
         parts.append(directives)
@@ -68,21 +80,40 @@ def build_user_prompt(
     parts.append(f"LAST RESULT:\n{last_result[:600]}")
 
     if history:
-        parts.append(f"HISTORY:\n" + "\n".join(history[-5:]))
+        parts.append("HISTORY:\n" + "\n".join(history[-5:]))
 
     parts.append("Next action (one JSON object):")
     return "\n\n".join(parts)
 
 
-def extract_initial_context(obs_metadata: dict) -> str:
-    """Extract compact task context from reset observation metadata."""
+def extract_initial_context(obs_or_meta) -> str:
+    """Extract compact task context from reset observation or metadata dict.
+
+    Accepts either:
+    - A ResetObservation (client/WS mode) with direct attributes
+    - A dict (in-process metadata dict)
+    - Any observation with a .metadata dict
+    """
+    if isinstance(obs_or_meta, dict):
+        meta = obs_or_meta
+    else:
+        # Try direct attributes first (ResetObservation via WS client)
+        meta: dict = {}
+        for field in ("description", "objectives", "open_items_preview", "available_document_ids"):
+            val = getattr(obs_or_meta, field, None)
+            if val:
+                meta[field] = val
+        # Fall back to .metadata dict (in-process or base Observation)
+        if not meta:
+            meta = getattr(obs_or_meta, "metadata", {}) or {}
+
     parts = []
-    if "description" in obs_metadata:
-        parts.append(obs_metadata["description"][:300])
-    if "objectives" in obs_metadata:
-        parts.append(f"Goals: {json.dumps(obs_metadata['objectives'])}")
-    if "open_items_preview" in obs_metadata:
-        preview = obs_metadata["open_items_preview"]
+    if "description" in meta:
+        parts.append(meta["description"][:300])
+    if "objectives" in meta:
+        parts.append(f"Goals: {json.dumps(meta['objectives'])}")
+    if "open_items_preview" in meta:
+        preview = meta["open_items_preview"]
         parts.append(f"Open items ({preview.get('total_count', 0)}):")
         for item in preview.get("items", []):
             parts.append(
@@ -90,20 +121,43 @@ def extract_initial_context(obs_metadata: dict) -> str:
                 f"side={item.get('side')}  "
                 f"{item.get('money', {}).get('amount')} {item.get('money', {}).get('currency')}"
             )
-    if "available_document_ids" in obs_metadata:
-        parts.append(f"Docs: {obs_metadata['available_document_ids']}")
+    if "available_document_ids" in meta:
+        parts.append(f"Docs: {meta['available_document_ids']}")
     return "\n".join(parts)
 
 
 def extract_tool_result(obs) -> str:
-    """Extract actual tool result content from a step observation."""
+    """Extract actual tool result content from a step observation.
+
+    Works with both in-process CallToolResult objects and dict results
+    from WS client serialization.
+    """
     result = getattr(obs, "result", None)
     if result is None:
         return "(no result)"
+
+    # Handle dict result (came through WS wire serialization)
+    if isinstance(result, dict):
+        sc = result.get("structured_content")
+        if sc and isinstance(sc, dict):
+            return json.dumps(sc, indent=2)[:600]
+        data = result.get("data")
+        if data is not None:
+            return json.dumps(data, indent=2)[:600]
+        for item in result.get("content", []):
+            text = item.get("text") if isinstance(item, dict) else getattr(item, "text", None)
+            if text:
+                try:
+                    return json.dumps(json.loads(text), indent=2)[:600]
+                except (json.JSONDecodeError, TypeError):
+                    return str(text)[:600]
+        return json.dumps(result, indent=2)[:600]
+
+    # Handle in-process CallToolResult object
     content = None
     if hasattr(result, "structured_content") and result.structured_content:
         content = result.structured_content
-    elif hasattr(result, "data") and result.data:
+    elif hasattr(result, "data") and result.data is not None:
         content = result.data
     else:
         for item in (getattr(result, "content", None) or []):
@@ -114,6 +168,6 @@ def extract_tool_result(obs) -> str:
                 except (json.JSONDecodeError, TypeError):
                     return str(text)[:600]
                 break
-    if content:
+    if content is not None:
         return json.dumps(content, indent=2)[:600]
     return "(empty)"

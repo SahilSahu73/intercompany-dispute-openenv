@@ -6,6 +6,16 @@ Entry points:
     - `main()`: CLI entry point (referenced by pyproject.toml [project.scripts])
 """
 
+import sys
+from pathlib import Path
+
+# Ensure project root is on sys.path so that root-level modules
+# (models.py, domain/, services/, etc.) are importable when the server
+# is launched as a script or via `uv run server`.
+_root = Path(__file__).resolve().parent.parent
+if str(_root) not in sys.path:
+    sys.path.insert(0, str(_root))
+
 import uvicorn
 from openenv.core.env_server.http_server import create_app
 from openenv.core.env_server.types import Action, Observation

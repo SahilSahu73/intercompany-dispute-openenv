@@ -29,7 +29,7 @@ from domain import (
     ScenarioBundle,
     ShipmentReport,
 )
-from models import FinanceDisputeState
+from models import FinanceDisputeState, ResetObservation
 from services import (
     audit_service,
     document_service,
@@ -322,11 +322,34 @@ class IntercompanyDisputeEnvironment(MCPEnvironment):
         # ── Register with MCPEnvironment ─────────────────────────────────────
         super().__init__(mcp)
 
+        # Cache tools at init time (no running event loop here).
+        # This avoids a deadlock when tools are called from inside the async WS
+        # server: the FastMCP in-process transport cannot re-enter the main loop
+        # from a thread-pool worker. We bypass the MCP client entirely and call
+        # the underlying Python functions directly.
+        from openenv.core.env_server.mcp_environment import get_server_tools as _gst
+        from openenv.core.env_server.mcp_types import Tool as _Tool
+        raw_tools = _gst(mcp)
+        self._tools_cache: list = []
+        self._tool_fns: dict = {}
+        for name, t in raw_tools.items():
+            self._tools_cache.append(
+                _Tool(
+                    name=name,
+                    description=getattr(t, "description", "") or "",
+                    input_schema=getattr(t, "parameters", {}) or {},
+                )
+            )
+            fn = getattr(t, "fn", None)
+            if callable(fn):
+                self._tool_fns[name] = fn
+
         # Episode state — reset on every reset()
         self._ctx: EpisodeContext | None = None
         self._episode_id: str = ""
         self._done: bool = False
         self._cumulative_reward: float = 0.0
+        self._terminal_score: float | None = None
 
     # ── Scenario loading ─────────────────────────────────────────────────────
 
@@ -411,6 +434,7 @@ class IntercompanyDisputeEnvironment(MCPEnvironment):
         self._episode_id = episode_id or str(uuid.uuid4())
         self._done = False
         self._cumulative_reward = 0.0
+        self._terminal_score = None
 
         scenario = self._load_scenario(task_id, scenario_id)
         self._ctx = self._init_episode_context(scenario)
@@ -424,9 +448,16 @@ class IntercompanyDisputeEnvironment(MCPEnvironment):
         open_items_preview = ledger_service.query_open_items(self._ctx, limit=10)
         doc_ids = list(self._ctx.documents.keys())
 
-        return Observation(
+        return ResetObservation(
             done=False,
             reward=0.0,
+            task_id=task_id,
+            scenario_id=scenario.scenario_id,
+            description=scenario.description,
+            objectives=scenario.objectives,
+            available_document_ids=doc_ids,
+            open_items_preview=open_items_preview,
+            # Keep metadata for any in-process code that reads it
             metadata={
                 "task_id": task_id,
                 "scenario_id": scenario.scenario_id,
@@ -436,11 +467,6 @@ class IntercompanyDisputeEnvironment(MCPEnvironment):
                 "step_limit": scenario.step_limit,
                 "available_document_ids": doc_ids,
                 "open_items_preview": open_items_preview,
-                "message": (
-                    "Episode started. "
-                    "Use list_tools to discover actions, "
-                    "then query_open_items to see transactions."
-                ),
             },
         )
 
@@ -498,6 +524,7 @@ class IntercompanyDisputeEnvironment(MCPEnvironment):
         # Add terminal score on episode end
         if done:
             terminal_score = self._compute_terminal_score()
+            self._terminal_score = terminal_score  # expose via state()
             obs.metadata = obs.metadata or {}
             obs.metadata["terminal_task_score"] = terminal_score
             obs.metadata["cumulative_reward"] = round(self._cumulative_reward, 4)
@@ -505,6 +532,48 @@ class IntercompanyDisputeEnvironment(MCPEnvironment):
             obs.metadata["step_limit"] = self._ctx.scenario.step_limit
 
         return obs
+
+    def _handle_list_tools(self):
+        """Return cached tools — avoids async/event-loop deadlock in WS server."""
+        from openenv.core.env_server.mcp_types import ListToolsObservation
+        return ListToolsObservation(tools=self._tools_cache)
+
+    def _handle_call_tool(self, action, timeout_s=None):
+        """Call tool function directly — avoids async/event-loop deadlock in WS server."""
+        from fastmcp.client.client import CallToolResult
+        from mcp.types import TextContent
+        from openenv.core.env_server.mcp_types import CallToolObservation, ToolError, ToolErrorType
+
+        tool_name = action.tool_name
+        fn = self._tool_fns.get(tool_name)
+        if fn is None:
+            return CallToolObservation(
+                tool_name=tool_name,
+                error=ToolError(
+                    error_type=ToolErrorType.TOOL_NOT_FOUND,
+                    message=f"Tool '{tool_name}' not found",
+                ),
+            )
+        try:
+            result = fn(**action.arguments)
+            return CallToolObservation(
+                tool_name=tool_name,
+                result=CallToolResult(
+                    content=[TextContent(type="text", text=str(result))],
+                    structured_content=result,
+                    meta=None,
+                    data=result,
+                    is_error=False,
+                ),
+            )
+        except Exception as e:
+            return CallToolObservation(
+                tool_name=tool_name,
+                error=ToolError(
+                    error_type=ToolErrorType.EXECUTION_ERROR,
+                    message=str(e)[:200],
+                ),
+            )
 
     def _step_impl(
         self,
@@ -538,6 +607,7 @@ class IntercompanyDisputeEnvironment(MCPEnvironment):
                 if obj not in self._ctx.completed_objectives
             ],
             violations_count=self._ctx.invalid_action_count,
+            terminal_task_score=self._terminal_score,
         )
 
     # ── Reward engine ────────────────────────────────────────────────────────

@@ -11,6 +11,8 @@ class EpisodeTracker:
         self.fetched_docs: set[str] = set()
         self.fx_queried: bool = False
         self.pending_eliminations: dict[str, str] = {}  # match_id -> entity_id
+        self.completed_match_pairs: list[tuple[str, str]] = []  # (debit, credit)
+        self.completed_eliminations: set[str] = set()  # match_ids
         self.consecutive_same: int = 0
         self._last_action_key: str = ""
 
@@ -29,19 +31,25 @@ class EpisodeTracker:
 
         # Track pending eliminations from successful matches
         if tool_name == "execute_match" and reward > 0:
+            debit = arguments.get("debit_txn_id", "")
+            credit = arguments.get("credit_txn_id", "")
+            if debit and credit:
+                self.completed_match_pairs.append((debit, credit))
             try:
                 data = json.loads(result_json)
                 pair_id = data.get("match_id") or data.get("matched_pair_id")
-                entity_id = self._resolve_entity(arguments.get("debit_txn_id", ""))
+                entity_id = self._resolve_entity(debit)
                 if pair_id:
-                    self.pending_eliminations[pair_id] = entity_id or "UNKNOWN"
+                    self.pending_eliminations[pair_id] = entity_id or "US_PARENT"
             except (json.JSONDecodeError, AttributeError):
                 pass
 
         # Remove from pending after successful elimination
         if tool_name == "execute_elimination" and reward > 0:
             pair_id = arguments.get("matched_pair_id")
-            self.pending_eliminations.pop(pair_id, None)
+            if pair_id:
+                self.pending_eliminations.pop(pair_id, None)
+                self.completed_eliminations.add(pair_id)
 
         # Track consecutive identical actions for loop detection
         action_key = f"{tool_name}:{json.dumps(arguments, sort_keys=True)}"
@@ -69,6 +77,10 @@ class EpisodeTracker:
                 for pid, eid in self.pending_eliminations.items()
             )
             parts.append(f"ACTION REQUIRED — execute_elimination next:\n{elim_lines}")
+
+        if self.completed_match_pairs:
+            pairs_str = ", ".join(f"{d}↔{c}" for d, c in self.completed_match_pairs)
+            parts.append(f"ALREADY MATCHED (do NOT re-match): {pairs_str}")
 
         if self.fetched_docs:
             parts.append(
